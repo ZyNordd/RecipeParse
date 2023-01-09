@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget* parent)
     db.open();
 
     query = new QSqlQuery(db);
-    query->exec("CREATE TABLE Recipes(Name TEXT,Recipe TEXT, Ingredients TEXT,Calories INT,Protein INT,Fat INT,Carbohydrate INT, URL TEXT);"); //Создание базы данных с полями: имя, текст рецепта, ингредиенты, калории, БЖУ и уникального URL, который нужен для избежания добавления повторного рецепта.
+    query->exec("CREATE TABLE Recipes(Name TEXT,Recipe TEXT, Ingredients TEXT,Calories INT,Protein INT,Fat INT,Carbohydrate INT, URL TEXT);"); //РЎРѕР·РґР°РЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… СЃ РїРѕР»СЏРјРё: РёРјСЏ, С‚РµРєСЃС‚ СЂРµС†РµРїС‚Р°, РёРЅРіСЂРµРґРёРµРЅС‚С‹, РєР°Р»РѕСЂРёРё, Р‘Р–РЈ Рё СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ URL, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РµРЅ РґР»СЏ РёР·Р±РµР¶Р°РЅРёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РїРѕРІС‚РѕСЂРЅРѕРіРѕ СЂРµС†РµРїС‚Р°.
     model = new QSqlTableModel(this, db);
     model->setTable("Recipes");
     model->select();
@@ -185,12 +185,12 @@ void MainWindow::on_pushButtonSingleGet_clicked() {
                 return;
             }
             else {
-                QMessageBox::information(this, QString::fromLocal8Bit("Предупреждение"), QString::fromLocal8Bit("Уже есть в базе данных"));
+                QMessageBox::information(this, QString::fromLocal8Bit("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ"), QString::fromLocal8Bit("РЈР¶Рµ РµСЃС‚СЊ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…"));
                 return;
             }
         }
     }
-    QMessageBox::information(this, QString::fromLocal8Bit("Ошибка"), QString::fromLocal8Bit("Ссылка не исправна"));
+    QMessageBox::information(this, QString::fromLocal8Bit("РћС€РёР±РєР°"), QString::fromLocal8Bit("РЎСЃС‹Р»РєР° РЅРµ РёСЃРїСЂР°РІРЅР°"));
 }
 
 void MainWindow::on_pushButtonFind_clicked() {
@@ -228,8 +228,8 @@ void MainWindow::on_pushButtonFind_clicked() {
             filter += " ((Ingredients LIKE '%"+Ingredients+"%') OR (Ingredients LIKE '%"+Ingredients2+"%')) ";
             if (a != Ingrs.size() - 1) filter += "AND";
         }
-        //QString filter = "Ingredients LIKE '%яйцо%'";
-        //QMessageBox::information(this, QString::fromLocal8Bit("ОШИБКА"), filter);
+        //QString filter = "Ingredients LIKE '%СЏР№С†Рѕ%'";
+        //QMessageBox::information(this, QString::fromLocal8Bit("РћРЁРР‘РљРђ"), filter);
         model->setFilter(filter);
         model->select();
         ui->tableView->setModel(model);
@@ -262,7 +262,7 @@ void MainWindow::on_pushButtonFind_clicked() {
 void MainWindow::on_pushButtonMultiDelete_clicked() {
     if (ui->lineEditSearch->text().isEmpty()) {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, QString::fromLocal8Bit("Предупреждение"), QString::fromLocal8Bit("Вы хотите очистить всю таблицу?"), QMessageBox::Yes|QMessageBox::No);
+        reply = QMessageBox::question(this, QString::fromLocal8Bit("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ"), QString::fromLocal8Bit("Р’С‹ С…РѕС‚РёС‚Рµ РѕС‡РёСЃС‚РёС‚СЊ РІСЃСЋ С‚Р°Р±Р»РёС†Сѓ?"), QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             query->exec("DELETE FROM Recipes");
             query->exec("VACUUM;");
@@ -304,8 +304,8 @@ void MainWindow::on_pushButtonMultiDelete_clicked() {
             filter += " ((Ingredients LIKE '%" + Ingredients + "%') OR (Ingredients LIKE '%" + Ingredients2 + "%')) ";
             if (a != Ingrs.size() - 1) filter += "AND";
         }
-        //QString filter = "Ingredients LIKE '%яйцо%'";
-        //QMessageBox::information(this, QString::fromLocal8Bit("ОШИБКА"), filter);
+        //QString filter = "Ingredients LIKE '%СЏР№С†Рѕ%'";
+        //QMessageBox::information(this, QString::fromLocal8Bit("РћРЁРР‘РљРђ"), filter);
         filter = "DELETE FROM Recipes WHERE " + filter;
         query->exec(filter);
         model->select();
@@ -322,7 +322,7 @@ void MainWindow::on_pushButtonMultiDelete_clicked() {
         QString filter = "Name LIKE '%" + Name + "%'"
             "OR Name LIKE '%" + Name2 + "%'";
         filter = "DELETE FROM Recipes WHERE " + filter;
-        //QMessageBox::information(this, QString::fromLocal8Bit("ОШИБКА"), filter);
+        //QMessageBox::information(this, QString::fromLocal8Bit("РћРЁРР‘РљРђ"), filter);
         query->exec(filter);
         model->select();
         ui->tableView->setModel(model);
@@ -377,7 +377,7 @@ void MainWindow::on_pushButtonScanURLs_clicked() {
     fout.close();
     newValueURL = URList.size();
     int diff = newValueURL - oldValueURL;
-    QMessageBox::information(this, QString::fromLocal8Bit("Успешно"), (QString::fromLocal8Bit("Список ссылок обновлен/создан. Добавлено ") + QString::number(diff) + QString::fromLocal8Bit(" ссылок.")));
+    QMessageBox::information(this, QString::fromLocal8Bit("РЈСЃРїРµС€РЅРѕ"), (QString::fromLocal8Bit("РЎРїРёСЃРѕРє СЃСЃС‹Р»РѕРє РѕР±РЅРѕРІР»РµРЅ/СЃРѕР·РґР°РЅ. Р”РѕР±Р°РІР»РµРЅРѕ ") + QString::number(diff) + QString::fromLocal8Bit(" СЃСЃС‹Р»РѕРє.")));
     ui->pushButtonScanURLs->setStyleSheet("background-color:midlight");
     ui->pushButtonStop->setStyleSheet("background-color:midlight");
 }
@@ -486,7 +486,7 @@ void MainWindow::managerFinished(QNetworkReply* reply) {
         carbohydrate_date == 0 && 
         recipe_date == "") {
         if(isSingle)
-            QMessageBox::information(this, QString::fromLocal8Bit("Ошибка"), QString::fromLocal8Bit("Ссылка устарела, на странице нет данных."));
+            QMessageBox::information(this, QString::fromLocal8Bit("РћС€РёР±РєР°"), QString::fromLocal8Bit("РЎСЃС‹Р»РєР° СѓСЃС‚Р°СЂРµР»Р°, РЅР° СЃС‚СЂР°РЅРёС†Рµ РЅРµС‚ РґР°РЅРЅС‹С…."));
         else {
         }
     }
