@@ -392,6 +392,7 @@ void MainWindow::on_pushButtonScanURLs_clicked() {
 
 void MainWindow::on_pushButtonMultiGet_clicked() {
     isSingle = false;
+    isGoing = true;
     ui->pushButtonMultiGet->setStyleSheet("background-color:lightgreen");
     ui->pushButtonStop->setStyleSheet("background-color:red");
     for (auto i = URList.begin(); i != URList.end(); ++i) {
@@ -406,7 +407,6 @@ void MainWindow::on_pushButtonMultiGet_clicked() {
                     isReplica = true;
                 }
             }
-            if (isReplica) QMessageBox::information(this, QString::fromLocal8Bit("Успешно"),QString::fromLocal8Bit("FUCK"));
             if (!isReplica) {
                 request.setUrl(QUrl(QString::fromStdString(*i)));
                 QNetworkReply* reply = manager->get(request);
