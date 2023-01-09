@@ -184,7 +184,9 @@ void MainWindow::on_pushButtonSingleGet_clicked() {
                 ui->labelCount->setText(QString::number(URList.size()));
                 std::ofstream fout;
                 fout.open("URList.txt");
-                fout << ui->lineEditURL->text().toStdString() << "\n";    
+                for (auto i = URList.begin(); i != URList.end(); i++) {
+                    fout << *i << "\n";
+                }
                 fout.close();
                 request.setUrl(QUrl(ui->lineEditURL->text()));
                 manager->get(request);
@@ -271,6 +273,7 @@ void MainWindow::on_pushButtonMultiDelete_clicked() {
         reply = QMessageBox::question(this, QString::fromLocal8Bit("ОШИБКА"), QString::fromLocal8Bit("Вы хотите очистить всю таблицу?"), QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             query->exec("DELETE FROM Recipes");
+            query->exec("VACUUM;");
             model->select();
             ui->tableView->setModel(model);
         }
