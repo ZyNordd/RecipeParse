@@ -180,6 +180,12 @@ void MainWindow::on_pushButtonSingleGet_clicked() {
                 }
             }
             if (!isReplica) {
+                URList.insert(ui->lineEditURL->text().toStdString());
+                ui->labelCount->setText(QString::number(URList.size()));
+                std::ofstream fout;
+                fout.open("URList.txt");
+                fout << ui->lineEditURL->text().toStdString() << "\n";    
+                fout.close();
                 request.setUrl(QUrl(ui->lineEditURL->text()));
                 manager->get(request);
                 return;
