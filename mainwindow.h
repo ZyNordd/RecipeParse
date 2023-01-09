@@ -12,6 +12,12 @@
 #include <fstream>
 #include <qthread.h>
 #include <unordered_set>
+#include <qmessagebox.h>
+#include <QFile>
+#include <QDataStream>
+#include <QTextCodec>
+#include <qtimer.h>
+#include <QPalette>
 
 #ifdef _WIN32
 #include <windows.h>

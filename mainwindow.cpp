@@ -1,13 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <qmessagebox.h>
-#include <QFile>
-#include <QDataStream>
-#include <QDebug>
-#include <QTextCodec>
-#include <qsqldatabase.h>
-#include <qtimer.h>
-#include <QPalette>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
