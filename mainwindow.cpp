@@ -262,7 +262,7 @@ void MainWindow::on_pushButtonFind_clicked() {
 void MainWindow::on_pushButtonMultiDelete_clicked() {
     if (ui->lineEditSearch->text().isEmpty()) {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, QString::fromLocal8Bit("ОШИБКА"), QString::fromLocal8Bit("Вы хотите очистить всю таблицу?"), QMessageBox::Yes|QMessageBox::No);
+        reply = QMessageBox::question(this, QString::fromLocal8Bit("Предупреждение"), QString::fromLocal8Bit("Вы хотите очистить всю таблицу?"), QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::Yes) {
             query->exec("DELETE FROM Recipes");
             query->exec("VACUUM;");
@@ -322,7 +322,7 @@ void MainWindow::on_pushButtonMultiDelete_clicked() {
         QString filter = "Name LIKE '%" + Name + "%'"
             "OR Name LIKE '%" + Name2 + "%'";
         filter = "DELETE FROM Recipes WHERE " + filter;
-        QMessageBox::information(this, QString::fromLocal8Bit("ОШИБКА"), filter);
+        //QMessageBox::information(this, QString::fromLocal8Bit("ОШИБКА"), filter);
         query->exec(filter);
         model->select();
         ui->tableView->setModel(model);
