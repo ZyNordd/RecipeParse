@@ -382,8 +382,10 @@ void MainWindow::on_pushButtonMultiGet_clicked() {
     isGoing = true;
     ui->pushButtonMultiGet->setStyleSheet("background-color:lightgreen");
     ui->pushButtonStop->setStyleSheet("background-color:red");
+    int track = 0;
     for (auto i = URList.begin(); i != URList.end(); ++i) {
         if (isGoing) {
+            track++;
             query->prepare("SELECT * FROM Recipes WHERE URL = :URL");
             query->bindValue(":URL", QString::fromStdString(*i));
             query->exec();
@@ -400,6 +402,12 @@ void MainWindow::on_pushButtonMultiGet_clicked() {
                 QEventLoop loop;
                 connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
                 loop.exec();
+                if (track == URList.size()) {
+                    isGoing = false;
+                    ui->pushButtonMultiGet->setStyleSheet("background-color:midlight");
+                    ui->pushButtonStop->setStyleSheet("background-color:midlight");
+                    QMessageBox::information(this, "Успешно", ("Рецепты добавлены в таблицу в количестве " + QString::number(tmp_count) + " ссылок."));
+                }
             }
         }
     }
@@ -498,7 +506,7 @@ void MainWindow::managerFinished(QNetworkReply* reply) {
         query->bindValue(":Carbohydrate", carbohydrate_date);
         query->bindValue(":URL", reply->url().toString());
         query->exec();
-
+        tmp_count++;
         model->select();
         ui->tableView->setModel(model);
     }

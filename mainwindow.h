@@ -89,6 +89,7 @@ class MainWindow : public QMainWindow {
         int oldValueURL = 0;
         /// Переменная, хранящая количество ссылок после обновления списка.
         int newValueURL = 0;
+        int tmp_count = 0;
 
 
         ///Вектор, хранящий дескрипторы и пути динамических библиотек.
