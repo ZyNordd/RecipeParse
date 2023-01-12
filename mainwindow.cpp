@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Fixed);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-
+#ifdef _WIN32
     for (const auto& file : fs::directory_iterator("./dll")) {
         if (!fs::is_directory(file)) {
             if (fs::path(file).extension() == ".dll")
@@ -40,6 +40,17 @@ MainWindow::MainWindow(QWidget* parent)
             }
         }
     }
+#else
+    for (const auto& file : fs::directory_iterator("./dll")) {
+        if (!fs::is_directory(file)) {
+            if (fs::path(file).extension() == ".so") {
+                fs::path p = fs::path(file);
+                openDll(p.string());
+            }
+        }
+    }
+#endif
+
 
     std::ifstream fin("URList.txt");
     for (std::string line; std::getline(fin, line); )
@@ -145,10 +156,11 @@ HINSTANCE MainWindow::findDllInList(std::string name) {
 }
 #else
 void* MainWindow::findDllInList(std::string name) {
-    auto goal = name;
-    goal.insert(goal.size(), ".so", 0, 4);
+    //auto goal = name;
+    //goal.insert(0, "lib",0, 3);
+    //goal.insert(goal.size(), ".so", 0, 4);
     for (auto i = 0; i < dynLibsList.size(); ++i) {
-        if (dynLibsList[i].second.filename() == goal) {
+        if (dynLibsList[i].second.filename() == "lib" + name + ".so") {
             return dynLibsList[i].first;
         }
     }
