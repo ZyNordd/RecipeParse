@@ -155,16 +155,16 @@ HINSTANCE MainWindow::findDllInList(std::string name) {
     }
 }
 #else
-void* MainWindow::findDllInList(std::string name) {
-    //auto goal = name;
-    //goal.insert(0, "lib",0, 3);
-    //goal.insert(goal.size(), ".so", 0, 4);
-    for (auto i = 0; i < dynLibsList.size(); ++i) {
-        if (dynLibsList[i].second.filename() == "lib" + name + ".so") {
-            return dynLibsList[i].first;
-        }
-    }
-}
+//void* MainWindow::findDllInList(std::string name) {
+//    //auto goal = name;
+//    //goal.insert(0, "lib",0, 3);
+//    //goal.insert(goal.size(), ".so", 0, 4);
+//    for (auto i = 0; i < dynLibsList.size(); ++i) {
+//        if (dynLibsList[i].second.filename() == "lib" + name + ".so") {
+//            return dynLibsList[i].first;
+//        }
+//    }
+//}
 #endif
 
 void MainWindow::on_pushButtonSingleGet_clicked() {
@@ -476,13 +476,13 @@ void MainWindow::managerFinished(QNetworkReply* reply) {
 #else
     void* load = findDllInList(getDomain(reply->url().toString()));
     URLs = (std::string(*)(std::string))dlsym(load, "URLs");
-    ingredients = (std::string(*)(std::string))dlsym(load, "URLs");
-    name = (std::string(*)(std::string))dlsym(load, "URLs");
-    calories = (int(*)(std::string))dlsym(load, "URLs");
-    protein = (int(*)(std::string))dlsym(load, "URLs");
-    fat = (int(*)(std::string))dlsym(load, "URLs");
-    carbohydrate = (int(*)(std::string))dlsym(load, "URLs");
-    recipe = (std::string(*)(std::string))dlsym(load, "URLs");
+    ingredients = (std::string(*)(std::string))dlsym(load, "ingredients");
+    name = (std::string(*)(std::string))dlsym(load, "name");
+    calories = (int(*)(std::string))dlsym(load, "calories");
+    protein = (int(*)(std::string))dlsym(load, "protein");
+    fat = (int(*)(std::string))dlsym(load, "fat");
+    carbohydrate = (int(*)(std::string))dlsym(load, "carbohydrate");
+    recipe = (std::string(*)(std::string))dlsym(load, "recipe");
 #endif
 
     QString ingredients_date = QString::fromStdString(ingredients(html_code.toStdString()));
