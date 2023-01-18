@@ -155,16 +155,16 @@ HINSTANCE MainWindow::findDllInList(std::string name) {
     }
 }
 #else
-//void* MainWindow::findDllInList(std::string name) {
-//    //auto goal = name;
-//    //goal.insert(0, "lib",0, 3);
-//    //goal.insert(goal.size(), ".so", 0, 4);
-//    for (auto i = 0; i < dynLibsList.size(); ++i) {
-//        if (dynLibsList[i].second.filename() == "lib" + name + ".so") {
-//            return dynLibsList[i].first;
-//        }
-//    }
-//}
+void* MainWindow::findDllInList(std::string name) {
+    //auto goal = name;
+    //goal.insert(0, "lib",0, 3);
+    //goal.insert(goal.size(), ".so", 0, 4);
+    for (auto i = 0; i < dynLibsList.size(); ++i) {
+        if (dynLibsList[i].second.filename() == "lib" + name + ".so") {
+            return dynLibsList[i].first;
+        }
+    }
+}
 #endif
 
 void MainWindow::on_pushButtonSingleGet_clicked() {
