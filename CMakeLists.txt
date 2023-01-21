@@ -17,8 +17,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#set(CMAKE_PREFIX_PATH "C:\\Qt\\5.15.2\\msvc2019_64\\")
-
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
@@ -73,20 +71,13 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+install(TARGETS RecipeParser DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+install(TARGETS eda RUNTIME DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/dll)
+
 install(TARGETS RecipeParser DESTINATION .)
 install(TARGETS eda RUNTIME DESTINATION ./dll)
 install(FILES URList.txt
 Recipes.db
 DESTINATION .) 
 
-#include(FetchContent)
-#FetchContent_Declare(htmlcxx
-#        GIT_REPOSITORY https://github.com/Caimbe/htmlcxx.git
-#        GIT_TAG origin/master)
-#FetchContent_GetProperties(htmlcxx)
-#if(NOT htmlcxx_POPULATED)
-#    FetchContent_Populate(htmlcxx)
-#    add_subdirectory(${htmlcxx_SOURCE_DIR} ${htmlcxx_BINARY_DIR} EXCLUDE_FROM_ALL)
-#endif()
-
-#target_link_libraries(RecipeParser PUBLIC htmlcxx)
