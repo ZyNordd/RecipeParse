@@ -363,7 +363,7 @@ void MainWindow::on_pushButtonScanURLs_clicked() {
     isGoing = true;
     ui->pushButtonScanURLs->setStyleSheet("background-color:lightgreen");
     ui->pushButtonStop->setStyleSheet("background-color:red");
-    oldValueURL = URList.size();
+    oldValueURL = static_cast<int>(URList.size());
     for (int i = 1; i < 715; ++i) {
         if (isGoing) {
             tmpURL = "https://eda.ru/recepty?page=";
@@ -382,7 +382,7 @@ void MainWindow::on_pushButtonScanURLs_clicked() {
         fout << *i << "\n";
     }
     fout.close();
-    newValueURL = URList.size();
+    newValueURL = static_cast<int>(URList.size());
     int diff = newValueURL - oldValueURL;
     QMessageBox::information(this, "Успешно", ("Список ссылок обновлен/создан. Добавлено " + QString::number(diff) + " ссылок."));
     ui->pushButtonScanURLs->setStyleSheet("background-color:midlight");
