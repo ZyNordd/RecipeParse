@@ -61,6 +61,7 @@ class MainWindow : public QMainWindow {
     #endif
 
     private:
+        void sizeTable();
         /// Oбъект, который предоставляет код для настройки и управления пользовательским интерфейсом.
         Ui::MainWindow *ui;
         /// Менеджер предоставляет возможность делать сетевые запросы.

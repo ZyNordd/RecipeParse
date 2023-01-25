@@ -19,17 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
     model->select();
 
     ui->tableView->setModel(model);
-
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Fixed);
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-
+    
 #ifdef _WIN32
     for (const auto& file : fs::directory_iterator("./dll")) {
         if (!fs::is_directory(file)) {
@@ -58,6 +48,9 @@ MainWindow::MainWindow(QWidget* parent)
     ui->labelCount->setText(QString::number(URList.size()));
     query->exec("SELECT COUNT(*) FROM Recipes");
     query->first();
+
+    sizeTable();
+
     ui->labelCountRecipes->setText(QString::number(query->value(0).toInt()));
     manager = new QNetworkAccessManager();
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(managerFinished(QNetworkReply*)));
@@ -75,6 +68,18 @@ MainWindow::~MainWindow()
     delete URLfinder;
 
     closeDll();
+}
+
+void MainWindow::sizeTable() {
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Fixed);
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 #ifdef _WIN32
@@ -170,6 +175,7 @@ void* MainWindow::findDllInList(std::string name) {
 #endif
 
 void MainWindow::on_pushButtonSingleGet_clicked() {
+    sizeTable();
     isSingle = true;
     auto domainDLL = getDomain(ui->lineEditURL->text());
     domainDLL.insert(domainDLL.size(), ".dll", 0, 4);
@@ -208,6 +214,7 @@ void MainWindow::on_pushButtonSingleGet_clicked() {
 }
 
 void MainWindow::on_pushButtonFind_clicked() {
+    sizeTable();
     if (ui->radioButtonIngredients->isChecked()) {
         QString tmpIngr;
         std::vector<QString> Ingrs;
@@ -260,18 +267,10 @@ void MainWindow::on_pushButtonFind_clicked() {
         model->select();
         ui->tableView->setModel(model);
     }
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Fixed);
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::on_pushButtonMultiDelete_clicked() {
+    sizeTable();
     if (ui->lineEditSearch->text().isEmpty()) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Предупреждение", "Вы хотите очистить всю таблицу?", QMessageBox::Yes|QMessageBox::No);
@@ -351,6 +350,7 @@ void MainWindow::on_pushButtonMultiDelete_clicked() {
 }
 
 void MainWindow::on_pushButtonDelete_clicked() {
+    sizeTable();
     model->removeRow(row);
     query->exec("VACUUM;");
     model->setTable("Recipes");
@@ -362,6 +362,7 @@ void MainWindow::on_pushButtonDelete_clicked() {
 }
 
 void MainWindow::on_pushButtonScanURLs_clicked() {
+    sizeTable();
     isGoing = true;
     ui->pushButtonScanURLs->setStyleSheet("background-color:lightgreen");
     ui->pushButtonStop->setStyleSheet("background-color:red");
@@ -392,11 +393,13 @@ void MainWindow::on_pushButtonScanURLs_clicked() {
 }
 
 void MainWindow::on_pushButtonMultiGet_clicked() {
+    sizeTable();
     isSingle = false;
     isGoing = true;
     ui->pushButtonMultiGet->setStyleSheet("background-color:lightgreen");
     ui->pushButtonStop->setStyleSheet("background-color:red");
     int track = 0;
+    tmp_count = 0;
     for (auto i = URList.begin(); i != URList.end(); ++i) {
         if (isGoing) {
             track++;
@@ -424,10 +427,15 @@ void MainWindow::on_pushButtonMultiGet_clicked() {
                 }
             }
         }
+        else {
+            QMessageBox::information(this, "Успешно", ("Рецепты добавлены в таблицу в количестве " + QString::number(tmp_count) + " ссылок."));
+            return;
+        }
     }
 }
 
 void MainWindow::on_pushButtonStop_clicked() {
+    sizeTable();
     isGoing = false;
     ui->pushButtonMultiGet->setStyleSheet("background-color:midlight");
     ui->pushButtonStop->setStyleSheet("background-color:midlight");
