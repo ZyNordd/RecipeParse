@@ -486,7 +486,6 @@ void MainWindow::managerFinished(QNetworkReply* reply) {
     recipe = (parser_str)*GetProcAddress(load, "recipe");
 #else
     void* load = findDllInList(getDomain(reply->url().toString()));
-    URLs = (std::string(*)(std::string))dlsym(load, "URLs");
     ingredients = (std::string(*)(std::string))dlsym(load, "ingredients");
     name = (std::string(*)(std::string))dlsym(load, "name");
     calories = (int(*)(std::string))dlsym(load, "calories");
