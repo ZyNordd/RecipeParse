@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget* parent)
         }
     }
 #else
-    for (const auto& file : fs::directory_iterator("./dll")) {
+    for (const auto& file : fs::directory_iterator("./lib")) {
         if (!fs::is_directory(file)) {
             if (fs::path(file).extension() == ".so") {
                 fs::path p = fs::path(file);
@@ -91,6 +91,7 @@ void MainWindow::insertDllIntoList(const HINSTANCE& mem, const fs::path& filepat
 void MainWindow::insertDllIntoList(void* mem, fs::path& filepath) {
     std::pair elem = std::make_pair(mem, filepath);
     dynLibsList.push_back(elem);
+}
 #endif
 
 void MainWindow::openDll(fs::path path) {

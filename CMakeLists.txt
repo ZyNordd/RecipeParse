@@ -52,7 +52,7 @@ endif()
 
 target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Network)
-target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Sql ${CMAKE_DL_LIBS})
 
 set_target_properties(RecipeParser PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -77,7 +77,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 install(TARGETS RecipeParser DESTINATION .)
 install(TARGETS eda RUNTIME DESTINATION ./dll)
-#install(FILES URList.txt
-#Recipes.db
-#DESTINATION .) 
+install(FILES ./URList.txt
+./Recipes.db
+DESTINATION .) 
 
