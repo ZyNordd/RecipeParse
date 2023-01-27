@@ -38,16 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     )
 
 else()
-    if(ANDROID)
-        add_library(RecipeParser SHARED
-            ${PROJECT_SOURCES}
-        )
-
-    else()
-        add_executable(RecipeParser
-            ${PROJECT_SOURCES}
-        )
-    endif()
+	add_executable(RecipeParser ${PROJECT_SOURCES})
 endif()
 
 target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
@@ -55,10 +46,6 @@ target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 target_link_libraries(RecipeParser PRIVATE Qt${QT_VERSION_MAJOR}::Sql ${CMAKE_DL_LIBS})
 
 set_target_properties(RecipeParser PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
@@ -71,9 +58,6 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-#install(TARGETS RecipeParser DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-#install(TARGETS eda RUNTIME DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/dll)
 
 install(TARGETS RecipeParser DESTINATION .)
 install(TARGETS eda RUNTIME DESTINATION ./dll)
