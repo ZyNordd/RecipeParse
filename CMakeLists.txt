@@ -24,7 +24,6 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Sql)
 
 set(PROJECT_SOURCES
         parser.cpp
-        parser.h
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
@@ -36,7 +35,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-
 else()
 	add_executable(RecipeParser ${PROJECT_SOURCES})
 endif()
@@ -62,5 +60,7 @@ install(TARGETS RecipeParser DESTINATION .)
 install(TARGETS eda RUNTIME DESTINATION ./dll)
 install(FILES ./URList.txt
 ./Recipes.db
+./libcrypto-1_1-x64.dll
+./libssl-1_1-x64.dll
 DESTINATION .) 
 
