@@ -55,7 +55,5 @@ install(TARGETS RecipeParser DESTINATION .)
 install(TARGETS eda RUNTIME DESTINATION ./dll)
 install(FILES ./URList.txt
 ./Recipes.db
-./libcrypto-1_1-x64.dll
-./libssl-1_1-x64.dll
 DESTINATION .) 
 
